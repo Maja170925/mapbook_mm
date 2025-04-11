@@ -1,16 +1,11 @@
-users:list = [
-    {"name":"Maja","location":"Świecie","posts":400},
-    {"name":"Krzysztof","location":"Białobrzegi","posts":500},
-    {"name":"Zuzanna","location":"Radzyń_Podlaski","posts":300},
-    {"name":"Bernard","location":"Ełk","posts":700},
-]
+from utils.model import users
+from utils.contoller import get_user_info
 
 
-
-def get_user_info(users_data:list)->None:
-
-      for user in users_data:
-            print(f"Twój znajomy {user['name']}! z miejscowości {user['location']} opublikował {user['posts']} postów")
+def main():
+    get_user_info(users)
 
 
-get_user_info(users)
+if __name__=="__main__":
+    main()
+
