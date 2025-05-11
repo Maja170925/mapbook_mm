@@ -1,5 +1,5 @@
-from utils.model import users
 from utils.contoller import get_user_info, add_users, remove_users
+from utils.model import users
 
 
 def main():
@@ -10,8 +10,8 @@ def main():
         print("1 - pokaż co u znajomych")
         print("2 - dodaj nowego znajomego")
         print("3 - usuń znajomego")
-        print("============================================")
-        choice = input("wybierz opcje menu: ")
+        print('============================================')
+        choice = input ("wybierz opcje menu:")
         if choice == "0": break
         if choice == "1": get_user_info(users)
         if choice == "2": add_users(users)
