@@ -4,15 +4,22 @@ def get_user_info(users_data: list) -> None:
 
 
 def add_users(users_data: list) -> None:
-    users_name = input("podaj imię nowego użytkownika: ")
-    users_location = input("podaj lokalizacje nowego znajomego: ")
-    users_posts = int(input("podaj liczbę postów: "))
+    users_name:str = input("podaj imię nowego użytkownika: ")
+    users_location:str = input("podaj lokalizacje nowego znajomego: ")
+    users_posts:str = (input("podaj liczbę postów: "))
     users_data.append({"name": users_name, "location": users_location, "posts": users_posts})
  
-def remove_users(users_data: list, user_name=None) -> None:
-    add_users.name=input("podaj imię użytkownika do usunięcia;")
+def remove_users(users_data: list) -> None:
+
+    user_name:str=input("podaj imię użytkownika do usunięcia;")
     for user in users_data:
         if user["name"] == user_name:
-                users_data.remove(user)
+            users_data.remove(user)
 
-
+def update_user(users_data: list) -> None:
+    user_name: str = input('podaj imię użytkownika do aktualizacji: ' )
+    for user in users_data:
+        if user['name'] == user_name:
+            user['name']=input('podaj nowe imię użytkownika: ')
+            user['location']=input('podaj nową lokalizację użytkownika: ')
+            user['posts']=input('podaj nową liczbe postów: ')
