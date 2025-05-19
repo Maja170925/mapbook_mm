@@ -3,6 +3,12 @@ import tkintermapview
 
 
 users:list = []
+    def __init__(self, name, surname, location, posts):
+        self.name = name
+        self.surname = surname
+        self.location = location
+        self.posts = posts
+        self.coordinates = self.get_coordinates()
 
 
 def add_user():
@@ -11,7 +17,7 @@ def add_user():
     zmienna_miejscowosc=entry_location.get()
     zmienna_posty=entry_posts.get()
 
-    users.append({"name": zmienna_imie, "surname": zmienna_nazwisko, "lcation": zmienna_miejscowosc, "location": zmienna_posty })
+    users.append(user(name= zmienna_imie, surname = zmienna_nazwisko, location = zmienna_miejscowosc, posts = zmienna_posty))
     print(users)
     entry_name.delete(0, END)
     entry_surname.delete(0, END)
@@ -24,10 +30,12 @@ def add_user():
 def show_users():
     listbox_lista_obiektow.delete(0, END)
     for idx, user in enumerate(users):
-        listbox_lista_obiektow.insert(idx, f"{idx+1}. {user["name"]} {user["surname"]}")
+        listbox_lista_obiektow.insert(idx, f"{idx+1}. {user.name} {user.surname}")
+        map_widget.set_marker(user.coordinates[0], user.coordinates[1])
 
 def remove_user():
     i=listbox_lista_obiektow.index(ACTIVE)
+    users[i].marker.delete()
     users.pop(i)
     show_users()
 
@@ -38,16 +46,17 @@ def show_user_details():
     user_location=users[i]["location"]
     user_posts=users[i]["posts"]
     label_name_szczegoly_obiektow_wartosc.config(text=user_name)
-    label_surname_szczegoly_obiektow.config(text=user_surname)
-    label_location_szczegoly_obiektow.config(text=user_location)
-    label_posts_szczegoly_obiektow.config(text=user_posts)
+    label_surname_szczegoly_obiektow_wartosc.config(text=user_surname)
+    label_location_szczegoly_obiektow_wartosc.config(text=user_location)
+    label_posts_szczegoly_obiektow_wartosc.config(text=user_posts)
+    map_widget.set_position(users)
 
 def edit_user():
     i=listbox_lista_obiektow.index(ACTIVE)
-    user_name=users[i]["name"]
-    user_surname=users[i]["surname"]
-    user_location=users[i]["location"]
-    user_posts=users[i]["posts"]
+    user_name=users[i].name
+    user_surname=users[i].surname
+    user_location=users[i].location
+    user_posts=users[i].post
     entry_name.delete(0, user_name)
     entry_surname.delete(0, user_surname)
     entry_location.delete(0, user_location)
@@ -60,10 +69,13 @@ def update_user(i):
     zmienna_nazwisko = entry_surname.get()
     zmienna_miejscowosc = entry_location.get()
     zmienna_posty = entry_posts.get()
-    users[1]["name"] = zmienna_imie
-    users[1]["surname"] = zmienna_nazwisko
-    users[1]["location"] = zmienna_miejscowosc
+    users[1].name = zmienna_imie
+    users[1].surname = zmienna_nazwisko
+    users[1].location = zmienna_miejscowosc
     users[1]["posts"] = zmienna_posty
+    users[i].marker.delete()
+    users[i].coordinates = users[i].get_coordinates()
+    print(users[i].coordinates)
     show_users()
 
     button_dodaj_obiekt.config(text="Dodaj użytkownika", command=add_user)
@@ -134,25 +146,25 @@ entry_posts.grid(row=4, column=1)
 button_dodaj_obiekt = Button(ramka_formularz, text = "Dodaj użytkownika", command=add_user)
 button_dodaj_obiekt.grid(row=5, column=0, columnspan=2)
 
-# ramka_szczegoly_objektow
-label_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = "Szczegóły obiektów")
-label_szczegoly_obiektow.grid(row=0, column = 0)
-label_name_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = "Imię:")
-label_name_szczegoly_obiektow.grid(row=1, column = 0)
-label_name_szczegoly_obiektow_wartosc = Label(ramka_szczegoly_obiektow, text = ".....")
-label_name_szczegoly_obiektow_wartosc.grid(row=1, column = 1)
-label_surname_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = "Nazwisko:")
-label_surname_szczegoly_obiektow.grid(row=1, column = 2)
-label_surname_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = ".....")
-label_surname_szczegoly_obiektow.grid(row=1, column = 3)
-label_location_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = "Miejscowość")
-label_location_szczegoly_obiektow.grid(row=1, column = 4)
-label_location_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = ".....")
-label_location_szczegoly_obiektow.grid(row=1, column = 5)
-label_posts_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = "Posty:")
-label_posts_szczegoly_obiektow.grid(row=1, column = 6)
-label_posts_szczegoly_obiektow = Label(ramka_szczegoly_obiektow, text = ".....")
-label_posts_szczegoly_obiektow.grid(row=1, column = 7)
+# ramka_szczegoly_obiektow
+label_szczegoly_obiektow= Label(ramka_szczegoly_obiektow, text="Szczegóły obiektów")
+label_szczegoly_obiektow.grid(row=0,column=0)
+label_name_szczegoly_obiektow= Label(ramka_szczegoly_obiektow,text="Imię:")
+label_name_szczegoly_obiektow.grid(row=1,column=0)
+label_name_szczegoly_obiektow_wartosc= Label(ramka_szczegoly_obiektow,text=".....")
+label_name_szczegoly_obiektow_wartosc.grid(row=1,column=1)
+label_surname_szczegoly_obiektow= Label(ramka_szczegoly_obiektow,text="Nazwisko:")
+label_surname_szczegoly_obiektow.grid(row=1,column=2)
+label_surname_szczegoly_obiektow_wartosc= Label(ramka_szczegoly_obiektow,text=".....")
+label_surname_szczegoly_obiektow_wartosc.grid(row=1,column=3)
+label_location_szczegoly_obiektow= Label(ramka_szczegoly_obiektow,text="Miejscowość")
+label_location_szczegoly_obiektow.grid(row=1,column=4)
+label_location_szczegoly_obiektow_wartosc= Label(ramka_szczegoly_obiektow,text=".....")
+label_location_szczegoly_obiektow_wartosc.grid(row=1,column=5)
+label_posts_szczegoly_obiektow= Label(ramka_szczegoly_obiektow,text="Posty")
+label_posts_szczegoly_obiektow.grid(row=1,column=6)
+label_posts_szczegoly_obiektow_wartosc= Label(ramka_szczegoly_obiektow,text=".....")
+label_posts_szczegoly_obiektow_wartosc.grid(row=1,column=7)
 
 # ramka_mapa
 map_widget = tkintermapview.TkinterMapView(ramka_mapa, width=1200, height=500, corner_radius=5)
