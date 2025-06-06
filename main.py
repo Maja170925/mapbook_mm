@@ -3,7 +3,7 @@ import tkintermapview
 
 
 users:list = []
-    def __init__(self, name, surname, location, posts):
+def __init__(self, name, surname, location, posts):
         self.name = name
         self.surname = surname
         self.location = location
@@ -17,7 +17,7 @@ def add_user():
     zmienna_miejscowosc=entry_location.get()
     zmienna_posty=entry_posts.get()
 
-    users.append(user(name= zmienna_imie, surname = zmienna_nazwisko, location = zmienna_miejscowosc, posts = zmienna_posty))
+    users.append(users(name= zmienna_imie, surname = zmienna_nazwisko, location = zmienna_miejscowosc, posts = zmienna_posty))
     print(users)
     entry_name.delete(0, END)
     entry_surname.delete(0, END)
